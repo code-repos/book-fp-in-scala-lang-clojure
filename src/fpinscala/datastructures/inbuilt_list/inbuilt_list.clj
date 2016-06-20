@@ -23,3 +23,11 @@
 (assert (=  0 (sum '()))                                              "sum of empty list should be 0")
 (assert (=  3 (sum (cons 3 '())))                                     "sum of single-element list should be the element")
 (assert (= 15 (sum (cons 1 (cons 2 (cons 3 (cons 4 (cons 5 '()))))))) "sum of list should be sum of its elements")
+
+(defn product [[x & xs :as ds]]
+  (cond (empty? ds) 1.0
+        (zero? x) 0.0
+        :else (* x (product xs))))
+
+(assert (=    3.0 (product '(3.0)))                  "product of single-element list should be the element")
+(assert (=  120.0 (product '(1.0 2.0 3.0 4.0 5.0)))  "product of list should be product of its elements")

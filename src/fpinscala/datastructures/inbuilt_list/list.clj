@@ -17,3 +17,11 @@
 (assert (=  0 (sum nil))                                              "sum of empty list should be 0")
 (assert (=  3 (sum (Cons 3 nil)))                                     "sum of single-element list should be the element")
 (assert (= 15 (sum (Cons 1 (Cons 2 (Cons 3 (Cons 4 (Cons 5 nil))))))) "sum of list should be sum of its elements")
+
+(defn product [doubles]
+  (cond (empty? doubles) 1.0
+        (zero? (.head doubles)) 0.0
+        :else (* (.head doubles) (product (.tail doubles)))))
+
+(assert (=   3.0 (product (Cons 3.0 nil)))                                             "product of single-element list should be the element")
+(assert (= 120.0 (product (Cons 1.0 (Cons 2.0 (Cons 3.0 (Cons 4.0 (Cons 5.0 nil))))))) "product of list should be product of its elements")
