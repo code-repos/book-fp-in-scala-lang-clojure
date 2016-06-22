@@ -31,3 +31,15 @@
 
 (assert (=    3.0 (product '(3.0)))                  "product of single-element list should be the element")
 (assert (=  120.0 (product '(1.0 2.0 3.0 4.0 5.0)))  "product of list should be product of its elements")
+
+; Exercise 3.2
+; Implement the function tail for removing the first element of a List. Note that the
+; function takes constant time. What are different choices you could make in your
+; implementation if the List is Nil? We’ll return to this question in the next chapter.
+
+ (defn tail [[x & xs :as list]]
+   (if (empty? list)
+     (throw (IllegalArgumentException. "Empty list has no tail!"))
+     xs))
+
+(assert (= '(2.0 3.0 4.0 5.0) (tail '(1.0 2.0 3.0 4.0 5.0)))  "the tail of a list is the list without its head")
