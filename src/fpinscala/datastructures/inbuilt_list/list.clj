@@ -38,3 +38,15 @@
     (.tail list)))
 
 (assert (= (Cons 2 (Cons 3 nil)) (tail (Cons 1 (Cons 2 (Cons 3 nil))))) "the tail of a list is the list without its head")
+
+; EXERCISE 3.3
+; Using the same idea, implement the function setHead for replacing the first element
+; of a List with a different value.
+
+(defn set-head [list x]
+  (if (empty? list)
+    (throw (IllegalArgumentException. "Empty list has no head!"))
+    (Cons x (.tail list))))
+
+(assert (=                   (Cons 0 nil) (set-head (Cons 1 nil) 0))                   "can change the head of a singleton list")
+(assert (= (Cons 0 (Cons 2 (Cons 3 nil))) (set-head (Cons 1 (Cons 2 (Cons 3 nil))) 0)) "can change the head of a list")

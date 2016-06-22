@@ -43,3 +43,15 @@
      xs))
 
 (assert (= '(2.0 3.0 4.0 5.0) (tail '(1.0 2.0 3.0 4.0 5.0)))  "the tail of a list is the list without its head")
+
+; EXERCISE 3.3
+; Using the same idea, implement the function setHead for replacing the first element
+; of a List with a different value.
+
+(defn set-head [list x]
+  (if (empty? list)
+    (throw (IllegalArgumentException. "Empty list has no head!"))
+    (cons x (tail list))))
+
+(assert (=                   (cons 0 nil) (set-head (cons 1 nil) 0))                   "can change the head of a singleton list")
+(assert (= (cons 0 (cons 2 (cons 3 nil))) (set-head (cons 1 (cons 2 (cons 3 nil))) 0)) "can change the head of a list")
