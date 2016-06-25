@@ -20,8 +20,8 @@
 
 
 (defn product [doubles]
-  (cond (empty? doubles) 1.0
-        (zero? (.head doubles)) 0.0
+  (cond (= nil doubles) 1.0
+        (= 0.0 (.head doubles)) 0.0
         :else (* (.head doubles) (product (.tail doubles)))))
 
 (assert (=   3.0 (product (Cons 3.0 nil)))                                             "product of single-element list should be the element")
@@ -33,7 +33,7 @@
 ; implementation if the List is Nil? We’ll return to this question in the next chapter.
 
 (defn tail [list]
-  (if (empty? list)
+  (if (= nil list)
     (throw (IllegalArgumentException. "Empty list has no tail!"))
     (.tail list)))
 
@@ -44,9 +44,24 @@
 ; of a List with a different value.
 
 (defn set-head [list x]
-  (if (empty? list)
+  (if (= nil list)
     (throw (IllegalArgumentException. "Empty list has no head!"))
     (Cons x (.tail list))))
 
 (assert (=                   (Cons 0 nil) (set-head (Cons 1 nil) 0))                   "can change the head of a singleton list")
 (assert (= (Cons 0 (Cons 2 (Cons 3 nil))) (set-head (Cons 1 (Cons 2 (Cons 3 nil))) 0)) "can change the head of a list")
+
+; EXERCISE 3.4
+; Generalize tail to the function drop, which removes the first n elements from a list.
+; Note that this function takes time proportional only to the number of elements being
+; dropped—we don’t need to make a copy of the entire List.
+
+(defn drop [list  n]
+  (cond (= n 0) list
+        (= nil list) (throw (IllegalArgumentException. "Cannot drop elements from empty list!"))
+        :else (drop (.tail list) (dec n))))
+
+(assert (= (Cons 1 (Cons 2 (Cons 3 nil))) (drop (Cons 1 (Cons 2 (Cons 3 nil))) 0)) "can drop zero element from list")
+(assert (=          (Cons 2 (Cons 3 nil)) (drop (Cons 1 (Cons 2 (Cons 3 nil))) 1)) "can drop one element from list")
+(assert (=                   (Cons 3 nil) (drop (Cons 1 (Cons 2 (Cons 3 nil))) 2)) "can drop two element from list")
+(assert (=                            nil (drop (Cons 1 (Cons 2 (Cons 3 nil))) 3)) "can drop all elements from list")

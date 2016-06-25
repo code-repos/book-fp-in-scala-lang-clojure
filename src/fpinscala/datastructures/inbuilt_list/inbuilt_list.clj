@@ -53,5 +53,20 @@
     (throw (IllegalArgumentException. "Empty list has no head!"))
     (cons x (tail list))))
 
-(assert (=                   (cons 0 nil) (set-head (cons 1 nil) 0))                   "can change the head of a singleton list")
-(assert (= (cons 0 (cons 2 (cons 3 nil))) (set-head (cons 1 (cons 2 (cons 3 nil))) 0)) "can change the head of a list")
+(assert (=     '(0) (set-head '(1) 0))     "can change the head of a singleton list")
+(assert (= '(0 2 3) (set-head '(1 2 3) 0)) "can change the head of a list")
+
+; EXERCISE 3.4
+; Generalize tail to the function drop, which removes the first n elements from a list.
+; Note that this function takes time proportional only to the number of elements being
+; dropped—we don’t need to make a copy of the entire List.
+
+ (defn drop [[_ & tail :as list]  n]
+   (cond (= n 0) list
+         (empty? list) (throw (IllegalArgumentException. "Cannot drop elements from empty list!"))
+         :else (drop tail (dec n))))
+
+ (assert (= '(1 2 3) (drop '(1 2 3) 0)) "can drop zero element from list")
+ (assert (=   '(2 3) (drop '(1 2 3) 1)) "can drop one element from list")
+ (assert (=     '(3) (drop '(1 2 3) 2)) "can drop two elements from list")
+ (assert (=      nil (drop '(1 2 3) 3)) "can drop all elements from list")
