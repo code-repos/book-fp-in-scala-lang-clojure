@@ -37,10 +37,10 @@
 ; function takes constant time. What are different choices you could make in your
 ; implementation if the List is Nil? We’ll return to this question in the next chapter.
 
- (defn tail [[x & xs :as list]]
+ (defn tail [list]
    (if (empty? list)
      (throw (IllegalArgumentException. "Empty list has no tail!"))
-     xs))
+     (rest list)))
 
 (assert (= '(2.0 3.0 4.0 5.0) (tail '(1.0 2.0 3.0 4.0 5.0)))  "the tail of a list is the list without its head")
 
@@ -61,12 +61,25 @@
 ; Note that this function takes time proportional only to the number of elements being
 ; dropped—we don’t need to make a copy of the entire List.
 
- (defn drop [[_ & tail :as list]  n]
+ (defn drop [list  n]
    (cond (= n 0) list
          (empty? list) (throw (IllegalArgumentException. "Cannot drop elements from empty list!"))
-         :else (drop tail (dec n))))
+         :else (drop (tail list) (dec n))))
 
  (assert (= '(1 2 3) (drop '(1 2 3) 0)) "can drop zero element from list")
  (assert (=   '(2 3) (drop '(1 2 3) 1)) "can drop one element from list")
  (assert (=     '(3) (drop '(1 2 3) 2)) "can drop two elements from list")
- (assert (=      nil (drop '(1 2 3) 3)) "can drop all elements from list")
+ (assert (=      '() (drop '(1 2 3) 3)) "can drop all elements from list")
+
+; EXERCISE 3.5
+; Implement dropWhile, which removes elements from the List prefix as long as they
+; match a predicate.
+(defn dropwhile [l f]
+  (cond (empty? l) l
+        (f (first l)) (dropwhile (tail l) f)
+        :else l))
+
+(assert (=        '() (dropwhile '() even?))         "no element to drop")
+(assert (= '(1 2 3 4) (dropwhile '(1 2 3 4) even?))  "no elements are dropped")
+(assert (=   '(3 4 5) (dropwhile '(2 3 4 5) even?))  "first element is dropped")
+(assert (=        '() (dropwhile '(2 4 6 8) even?))  "all elements are dropped")

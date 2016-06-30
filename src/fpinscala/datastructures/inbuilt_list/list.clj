@@ -65,3 +65,16 @@
 (assert (=          (Cons 2 (Cons 3 nil)) (drop (Cons 1 (Cons 2 (Cons 3 nil))) 1)) "can drop one element from list")
 (assert (=                   (Cons 3 nil) (drop (Cons 1 (Cons 2 (Cons 3 nil))) 2)) "can drop two element from list")
 (assert (=                            nil (drop (Cons 1 (Cons 2 (Cons 3 nil))) 3)) "can drop all elements from list")
+
+; EXERCISE 3.5
+; Implement dropWhile, which removes elements from the List prefix as long as they
+; match a predicate.
+(defn dropwhile [l f]
+  (cond (empty? l) l
+        (f (.head l)) (dropwhile (.tail l) f)
+        :else l))
+
+(assert (=                                      nil (dropwhile nil even?))                                      "no element to drop")
+(assert (=  (Cons 1 (Cons 2 (Cons 3 (Cons 4 nil)))) (dropwhile (Cons 1 (Cons 2 (Cons 3 (Cons 4 nil)))) even?))  "no elements are dropped")
+(assert (=           (Cons 3 (Cons 4 (Cons 5 nil))) (dropwhile (Cons 2 (Cons 3 (Cons 4 (Cons 5 nil)))) even?))  "first element is dropped")
+(assert (=                                      nil (dropwhile (Cons 2 (Cons 4 (Cons 6 (Cons 8 nil)))) even?))  "all elements are dropped")
